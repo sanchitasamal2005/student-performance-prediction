@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Student Performance Dashboard</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static',
+          filename='css/style.css') }}">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+
+    <header>
+
+        <h1>📊 Student Performance Dashboard</h1>
+
+        <p>
+            Analyze your prediction history
+        </p>
+
+    </header>
+
+
+    <!-- STATISTICS -->
+
+    <div class="dashboard-cards">
+
+        <div class="dashboard-card">
+
+            <div class="card-icon">
+                🔢
+            </div>
+
+            <h3>Total Predictions</h3>
+
+            <div class="card-number">
+                {{ total_predictions }}
+            </div>
+
+        </div>
+
+
+        <div class="dashboard-card">
+
+            <div class="card-icon">
+                🎯
+            </div>
+
+            <h3>Average Score</h3>
+
+            <div class="card-number">
+                {{ average_score }}
+            </div>
+
+        </div>
+
+
+        <div class="dashboard-card">
+
+            <div class="card-icon">
+                🏆
+            </div>
+
+            <h3>Highest Score</h3>
+
+            <div class="card-number">
+                {{ highest_score }}
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- CHART -->
+
+    <div class="chart-box">
+
+        <h2>📈 Prediction Score Trend</h2>
+
+        <canvas id="scoreChart"></canvas>
+
+    </div>
+
+
+    <!-- RECENT PREDICTIONS -->
+
+    <div class="history-box">
+
+        <h2>📋 Recent Predictions</h2>
+
+        {% if predictions %}
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>Date & Time</th>
+
+                        <th>Hours Studied</th>
+
+                        <th>Attendance</th>
+
+                        <th>Previous Score</th>
+
+                        <th>Predicted Score</th>
+
+                        <th>Performance</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for prediction in predictions[:5] %}
+
+                    <tr>
+
+                        <td>
+                            {{ prediction["date_time"] }}
+                        </td>
+
+                        <td>
+                            {{ prediction["hours_studied"] }}
+                        </td>
+
+                        <td>
+                            {{ prediction["attendance"] }}%
+                        </td>
+
+                        <td>
+                            {{ prediction["previous_scores"] }}
+                        </td>
+
+                        <td class="history-score">
+                            {{ prediction["predicted_score"] }}
+                        </td>
+
+                        <td>
+                            {{ prediction["performance"] }}
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        {% else %}
+
+        <div class="empty-history">
+
+            <h2>📭 No Predictions Yet</h2>
+
+            <p>
+                Make a prediction first.
+            </p>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- BUTTONS -->
+
+  <div class="dashboard-buttons">
+
+    <a href="/" class="back-button">
+        🔮 New Prediction
+    </a>
+
+    <a href="/history" class="back-button">
+        📋 Full History
+    </a>
+
+    <a href="/export-csv"
+       class="back-button export-button">
+        📥 Export CSV
+    </a>
+
+</div>
+
+</div>
+
+
+<!-- CHART SCRIPT -->
+
+<script>
+
+    const dates = [
+
+        {% for prediction in predictions %}
+
+        "{{ prediction['date_time'] }}",
+
+        {% endfor %}
+
+    ];
+
+
+    const scores = [
+
+        {% for prediction in predictions %}
+
+        {{ prediction['predicted_score'] }},
+
+        {% endfor %}
+
+    ];
+
+
+    const ctx =
+        document
+        .getElementById("scoreChart");
+
+
+    new Chart(ctx, {
+
+        type: "line",
+
+        data: {
+
+            labels: dates.reverse(),
+
+            datasets: [{
+
+                label: "Predicted Exam Score",
+
+                data: scores.reverse(),
+
+                borderWidth: 3,
+
+                tension: 0.3,
+
+                fill: false
+
+            }]
+
+        },
+
+        options: {
+
+            responsive: true,
+
+            scales: {
+
+                y: {
+
+                    beginAtZero: true,
+
+                    max: 100,
+
+                    title: {
+
+                        display: true,
+
+                        text: "Exam Score"
+
+                    }
+
+                },
+
+                x: {
+
+                    title: {
+
+                        display: true,
+
+                        text: "Date"
+
+                    }
+
+                }
+
+            }
+
+        }
+
+    });
+
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Prediction History</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static',
+          filename='css/style.css') }}">
+
+</head>
+
+
+<body>
+
+<div class="container">
+
+    <header>
+
+        <h1>📋 Prediction History</h1>
+
+        <p>
+            View your previous student performance predictions
+        </p>
+
+    </header>
+
+
+    <div class="history-box">
+
+        {% if predictions %}
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>Date & Time</th>
+
+                        <th>Hours Studied</th>
+
+                        <th>Attendance</th>
+
+                        <th>Previous Score</th>
+
+                        <th>Predicted Score</th>
+
+                        <th>Performance</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for prediction in predictions %}
+
+                    <tr>
+
+                        <td>
+                            {{ prediction["date_time"] }}
+                        </td>
+
+                        <td>
+                            {{ prediction["hours_studied"] }}
+                        </td>
+
+                        <td>
+                            {{ prediction["attendance"] }}%
+                        </td>
+
+                        <td>
+                            {{ prediction["previous_scores"] }}
+                        </td>
+
+                        <td class="history-score">
+
+                            {{ prediction["predicted_score"] }}
+
+                        </td>
+
+                        <td>
+
+                            {{ prediction["performance"] }}
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        {% else %}
+
+        <div class="empty-history">
+
+            <h2>📭 No Predictions Yet</h2>
+
+            <p>
+                Make your first prediction to see it here.
+            </p>
+
+        </div>
+
+        {% endif %}
+
+
+       <div class="history-actions">
+
+    <a href="/"
+       class="back-button">
+        ← Make New Prediction
+    </a>
+
+    <a href="/export-csv"
+       class="back-button export-button">
+        📥 Export CSV
+    </a>
+
+</div>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

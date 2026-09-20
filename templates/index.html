@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Student Performance Prediction</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+  <nav class="navbar">
+
+    <div class="nav-logo">
+        🎓 Student Performance
+    </div>
+
+    <div class="nav-links">
+
+        <a href="/">🏠 Home</a>
+
+        <a href="/history">📋 History</a>
+
+        <a href="/dashboard">📊 Dashboard</a>
+
+        <a href="/model-performance">
+    🤖 Model</a>
+
+        <button
+            type="button"
+            id="themeToggle"
+            class="theme-button">
+            🌙
+        </button>
+
+    </div>
+
+</nav>
+
+    <div class="container">
+
+        <header class="hero-header">
+
+    <div class="ai-badge">
+        🤖 AI POWERED • MACHINE LEARNING
+    </div>
+
+    <h1>
+        🎓 Student Performance
+        <span>Prediction</span>
+    </h1>
+
+    <p>
+        Predict a student's expected exam score
+        using academic, personal, and learning-related factors.
+    </p>
+
+    <div class="hero-stats">
+
+        <div class="hero-stat">
+            <strong>19</strong>
+            <small>Input Features</small>
+        </div>
+
+        <div class="hero-stat">
+            <strong>6K+</strong>
+            <small>Student Records</small>
+        </div>
+
+        <div class="hero-stat">
+            <strong>ML</strong>
+            <small>Prediction</small>
+        </div>
+
+    </div>
+
+</header>
+
+        <form id="predictionForm">
+
+            <div class="form-section">
+
+                <h2>📚 Academic Information</h2>
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+                        <label>Hours Studied</label>
+                        <input type="number"
+                               name="Hours_Studied"
+                               min="0"
+                               max="24"
+                               required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Attendance (%)</label>
+                        <input type="number"
+                               name="Attendance"
+                               min="0"
+                               max="100"
+                               required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Previous Scores</label>
+                        <input type="number"
+                               name="Previous_Scores"
+                               min="0"
+                               max="100"
+                               required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Tutoring Sessions</label>
+                        <input type="number"
+                               name="Tutoring_Sessions"
+                               min="0"
+                               required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Sleep Hours</label>
+                        <input type="number"
+                               name="Sleep_Hours"
+                               min="0"
+                               max="24"
+                               required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Physical Activity</label>
+                        <input type="number"
+                               name="Physical_Activity"
+                               min="0"
+                               required>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="form-section">
+
+                <h2>👨‍🎓 Student Information</h2>
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+                        <label>Parental Involvement</label>
+                        <select name="Parental_Involvement" required>
+                            <option value="">Select</option>
+                            <option value="Low">Low</option>
+                            <option value="Medium">Medium</option>
+                            <option value="High">High</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Access to Resources</label>
+                        <select name="Access_to_Resources" required>
+                            <option value="">Select</option>
+                            <option value="Low">Low</option>
+                            <option value="Medium">Medium</option>
+                            <option value="High">High</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Extracurricular Activities</label>
+                        <select name="Extracurricular_Activities" required>
+                            <option value="">Select</option>
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Motivation Level</label>
+                        <select name="Motivation_Level" required>
+                            <option value="">Select</option>
+                            <option value="Low">Low</option>
+                            <option value="Medium">Medium</option>
+                            <option value="High">High</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Internet Access</label>
+                        <select name="Internet_Access" required>
+                            <option value="">Select</option>
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Family Income</label>
+                        <select name="Family_Income" required>
+                            <option value="">Select</option>
+                            <option value="Low">Low</option>
+                            <option value="Medium">Medium</option>
+                            <option value="High">High</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Teacher Quality</label>
+                        <select name="Teacher_Quality" required>
+                            <option value="">Select</option>
+                            <option value="Low">Low</option>
+                            <option value="Medium">Medium</option>
+                            <option value="High">High</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>School Type</label>
+                        <select name="School_Type" required>
+                            <option value="">Select</option>
+                            <option value="Public">Public</option>
+                            <option value="Private">Private</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Peer Influence</label>
+                        <select name="Peer_Influence" required>
+                            <option value="">Select</option>
+                            <option value="Negative">Negative</option>
+                            <option value="Neutral">Neutral</option>
+                            <option value="Positive">Positive</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Learning Disabilities</label>
+                        <select name="Learning_Disabilities" required>
+                            <option value="">Select</option>
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Parental Education Level</label>
+                        <select name="Parental_Education_Level" required>
+                            <option value="">Select</option>
+                            <option value="High School">High School</option>
+                            <option value="College">College</option>
+                            <option value="Postgraduate">Postgraduate</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Distance from Home</label>
+                        <select name="Distance_from_Home" required>
+                            <option value="">Select</option>
+                            <option value="Near">Near</option>
+                            <option value="Moderate">Moderate</option>
+                            <option value="Far">Far</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Gender</label>
+                        <select name="Gender" required>
+                            <option value="">Select</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                    </div>
+
+                </div>
+            </div>
+
+
+<div class="button-group">
+
+    <button type="submit" id="predictButton">
+        🔮 Predict Exam Score
+    </button>
+
+    <button type="button" id="clearButton" class="clear-button">
+        🧹 Clear Form
+    </button>
+
+</div>
+
+        </form>
+
+ <div id="result" class="result-box">
+
+    <h2>📊 Prediction Result</h2>
+
+    <div class="score">
+        <span id="predictionValue">--</span>
+        <span class="out-of">/ 100</span>
+    </div>
+
+    <div class="progress-container">
+        <div
+            id="scoreProgress"
+            class="score-progress">
+        </div>
+    </div>
+
+    <h3 id="performanceLevel">--</h3>
+
+
+    <!-- PERFORMANCE INSIGHT -->
+
+    <div class="insight-box">
+
+        <div class="insight-icon">
+            💡
+        </div>
+
+        <div>
+
+            <h4>Performance Insight</h4>
+
+            <p id="insightMessage">
+                Your performance insight
+                will appear here.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- PREDICTION SUMMARY -->
+
+    <div class="prediction-summary">
+
+        <h3>📋 Prediction Summary</h3>
+
+        <div class="summary-grid">
+
+            <div class="summary-item">
+
+                <span>⏱️</span>
+
+                <div>
+                    <small>
+                        Hours Studied
+                    </small>
+
+                    <strong id="summaryHours">
+                        --
+                    </strong>
+                </div>
+
+            </div>
+
+
+            <div class="summary-item">
+
+                <span>📅</span>
+
+                <div>
+                    <small>
+                        Attendance
+                    </small>
+
+                    <strong id="summaryAttendance">
+                        --
+                    </strong>
+                </div>
+
+            </div>
+
+
+            <div class="summary-item">
+
+                <span>📝</span>
+
+                <div>
+                    <small>
+                        Previous Score
+                    </small>
+
+                    <strong id="summaryPrevious">
+                        --
+                    </strong>
+                </div>
+
+            </div>
+
+
+            <div class="summary-item">
+
+                <span>📚</span>
+
+                <div>
+                    <small>
+                        Tutoring Sessions
+                    </small>
+
+                    <strong id="summaryTutoring">
+                        --
+                    </strong>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <p id="predictionMessage">
+        Your prediction has been saved to history.
+    </p>
+    <button
+    type="button"
+    id="downloadReportButton"
+    class="report-button">
+
+    📄 Download Prediction Report
+
+</button>
+
+</div>
+        
+
+
+
+<footer class="footer">
+
+    <div class="footer-content">
+
+        <h3>🎓 Student Performance Prediction</h3>
+
+        <p>
+            An AI-powered Machine Learning project
+            for predicting student exam performance.
+        </p>
+
+        <div class="footer-links">
+
+            <a href="/">🏠 Home</a>
+
+            <a href="/history">📋 History</a>
+
+            <a href="/dashboard">📊 Dashboard</a>
+
+        </div>
+
+        <p class="copyright">
+            © 2026 Student Performance Prediction.
+            Built with Python, Flask & Machine Learning.
+        </p>
+
+    </div>
+
+</footer>
+
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+</body>
+</html>

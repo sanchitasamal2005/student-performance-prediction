@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Model Performance</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static',
+          filename='css/style.css') }}">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+
+<body>
+
+    <!-- ========================= -->
+    <!-- NAVBAR -->
+    <!-- ========================= -->
+
+    <nav class="navbar">
+
+        <div class="nav-logo">
+            🎓 Student Performance
+        </div>
+
+        <div class="nav-links">
+
+            <a href="/">
+                🏠 Home
+            </a>
+
+            <a href="/history">
+                📋 History
+            </a>
+
+            <a href="/dashboard">
+                📊 Dashboard
+            </a>
+
+            <a href="/model-performance">
+                🤖 Model
+            </a>
+
+            <button
+                type="button"
+                id="themeToggle"
+                class="theme-button">
+                🌙
+            </button>
+
+        </div>
+
+    </nav>
+
+
+    <!-- ========================= -->
+    <!-- MAIN CONTAINER -->
+    <!-- ========================= -->
+
+    <div class="container">
+
+
+        <!-- HEADER -->
+
+        <header>
+
+            <div class="ai-badge">
+                🤖 MACHINE LEARNING ANALYSIS
+            </div>
+
+            <h1>
+                📈 Model Performance
+            </h1>
+
+            <p>
+                Compare different machine learning
+                models used for student performance prediction.
+            </p>
+
+        </header>
+
+
+        <!-- ========================= -->
+        <!-- MODEL INFORMATION -->
+        <!-- ========================= -->
+
+        <div class="model-info-box">
+
+            <h2>
+                🧠 About Model Evaluation
+            </h2>
+
+            <p>
+                The models are evaluated using three
+                important regression metrics:
+            </p>
+
+
+            <div class="metric-grid">
+
+
+                <div class="metric-card">
+
+                    <div class="metric-icon">
+                        🎯
+                    </div>
+
+                    <h3>
+                        MAE
+                    </h3>
+
+                    <p>
+                        Mean Absolute Error
+                    </p>
+
+                    <small>
+                        Lower is better
+                    </small>
+
+                </div>
+
+
+                <div class="metric-card">
+
+                    <div class="metric-icon">
+                        📏
+                    </div>
+
+                    <h3>
+                        RMSE
+                    </h3>
+
+                    <p>
+                        Root Mean Squared Error
+                    </p>
+
+                    <small>
+                        Lower is better
+                    </small>
+
+                </div>
+
+
+                <div class="metric-card">
+
+                    <div class="metric-icon">
+                        📊
+                    </div>
+
+                    <h3>
+                        R²
+                    </h3>
+
+                    <p>
+                        R-squared
+                    </p>
+
+                    <small>
+                        Higher is better
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+<!-- ========================= -->
+<!-- BEST MODEL -->
+<!-- ========================= -->
+
+<div class="best-model-box">
+
+    <div class="best-model-icon">
+        🏆
+    </div>
+
+    <div class="best-model-content">
+
+        <span class="best-model-label">
+            MODEL SELECTED FOR PREDICTION
+        </span>
+
+        <h2>
+            {{ best_model }}
+        </h2>
+
+        <p>
+            This model has the lowest MAE among
+            the evaluated models.
+        </p>
+
+        <div class="best-model-metrics">
+
+            <div>
+
+                <small>
+                    MAE
+                </small>
+
+                <strong>
+                    {{ best_mae }}
+                </strong>
+
+            </div>
+
+
+            <div>
+
+                <small>
+                    RMSE
+                </small>
+
+                <strong>
+                    {{ best_rmse }}
+                </strong>
+
+            </div>
+
+
+            <div>
+
+                <small>
+                    R²
+                </small>
+
+                <strong>
+                    {{ best_r2 }}
+                </strong>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ========================= -->
+<!-- PREDICTION RELIABILITY -->
+<!-- ========================= -->
+
+<div class="reliability-box">
+
+    <div class="reliability-icon">
+        🛡️
+    </div>
+
+    <div class="reliability-content">
+
+        <h2>
+            Prediction Reliability
+        </h2>
+
+        <p>
+            The predicted exam score is an estimate generated
+            by the trained machine learning model. It should
+            be interpreted as a prediction rather than an
+            exact future exam result.
+        </p>
+
+        <div class="reliability-note">
+
+            <strong>
+                📌 Important:
+            </strong>
+
+            <span>
+                Model performance is evaluated using the
+                test dataset with MAE, RMSE and R² metrics.
+            </span>
+
+        </div>
+
+    </div>
+
+</div>
+        <!-- ========================= -->
+        <!-- MODEL COMPARISON -->
+        <!-- ========================= -->
+
+        <div class="history-box">
+
+            <h2>
+                🔬 Model Comparison
+            </h2>
+
+            <p class="model-description">
+                Performance measured on the test dataset.
+            </p>
+
+
+            {% if models %}
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Model
+                            </th>
+
+                            <th>
+                                MAE
+                            </th>
+
+                            <th>
+                                RMSE
+                            </th>
+
+                            <th>
+                                R²
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        {% for model in models %}
+
+                        <tr>
+
+                            <td>
+                                <strong>
+                                    {{ model["Model"] }}
+                                </strong>
+                            </td>
+
+                            <td>
+                                {{ model["MAE"] }}
+                            </td>
+
+                            <td>
+                                {{ model["RMSE"] }}
+                            </td>
+
+                            <td>
+                                {{ model["R2"] }}
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            {% else %}
+
+            <div class="empty-history">
+
+                <h2>
+                    📭 No Model Results
+                </h2>
+
+                <p>
+                    Run the model training script first.
+                </p>
+
+            </div>
+
+            {% endif %}
+
+        </div>
+    <!-- ========================= -->
+<!-- MODEL CHARTS -->
+<!-- ========================= -->
+
+<div class="model-charts">
+
+    <div class="chart-box">
+
+        <h2>
+            📉 MAE Comparison
+        </h2>
+
+        <canvas id="maeChart"></canvas>
+
+    </div>
+
+
+    <div class="chart-box">
+
+        <h2>
+            📉 RMSE Comparison
+        </h2>
+
+        <canvas id="rmseChart"></canvas>
+
+    </div>
+
+
+    <div class="chart-box">
+
+        <h2>
+            📈 R² Comparison
+        </h2>
+
+        <canvas id="r2Chart"></canvas>
+
+    </div>
+
+</div>
+
+        <!-- ========================= -->
+        <!-- BUTTONS -->
+        <!-- ========================= -->
+
+        <div class="dashboard-buttons">
+
+            <a href="/" class="back-button">
+                🔮 New Prediction
+            </a>
+
+            <a href="/dashboard" class="back-button">
+                📊 Dashboard
+            </a>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- FOOTER -->
+    <!-- ========================= -->
+
+    <footer class="footer">
+
+        <div class="footer-content">
+
+            <h3>
+                🎓 Student Performance Prediction
+            </h3>
+
+            <p>
+                An AI-powered Machine Learning project
+                for predicting student exam performance.
+            </p>
+
+            <div class="footer-links">
+
+                <a href="/">
+                    🏠 Home
+                </a>
+
+                <a href="/history">
+                    📋 History
+                </a>
+
+                <a href="/dashboard">
+                    📊 Dashboard
+                </a>
+
+                <a href="/model-performance">
+                    🤖 Model
+                </a>
+
+            </div>
+
+            <p class="copyright">
+                © 2026 Student Performance Prediction.
+                Built with Python, Flask & Machine Learning.
+            </p>
+
+        </div>
+
+    </footer>
+
+
+
+    <script>
+
+    const modelNames = [
+        {% for model in models %}
+        "{{ model['Model'] }}",
+        {% endfor %}
+    ];
+
+
+    const maeValues = [
+        {% for model in models %}
+        {{ model['MAE'] }},
+        {% endfor %}
+    ];
+
+
+    const rmseValues = [
+        {% for model in models %}
+        {{ model['RMSE'] }},
+        {% endfor %}
+    ];
+
+
+    const r2Values = [
+        {% for model in models %}
+        {{ model['R2'] }},
+        {% endfor %}
+    ];
+
+
+    /* =========================
+       MAE CHART
+    ========================= */
+
+    const maeCanvas =
+        document.getElementById("maeChart");
+
+    if (maeCanvas && modelNames.length > 0) {
+
+        new Chart(maeCanvas, {
+
+            type: "bar",
+
+            data: {
+
+                labels: modelNames,
+
+                datasets: [{
+
+                    label: "MAE",
+
+                    data: maeValues,
+
+                    borderWidth: 1
+
+                }]
+
+            },
+
+            options: {
+
+                responsive: true,
+
+                plugins: {
+
+                    legend: {
+                        display: true
+                    }
+
+                },
+
+                scales: {
+
+                    y: {
+
+                        beginAtZero: true,
+
+                        title: {
+
+                            display: true,
+
+                            text: "Mean Absolute Error"
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        });
+
+    }
+
+
+    /* =========================
+       RMSE CHART
+    ========================= */
+
+    const rmseCanvas =
+        document.getElementById("rmseChart");
+
+    if (rmseCanvas && modelNames.length > 0) {
+
+        new Chart(rmseCanvas, {
+
+            type: "bar",
+
+            data: {
+
+                labels: modelNames,
+
+                datasets: [{
+
+                    label: "RMSE",
+
+                    data: rmseValues,
+
+                    borderWidth: 1
+
+                }]
+
+            },
+
+            options: {
+
+                responsive: true,
+
+                plugins: {
+
+                    legend: {
+                        display: true
+                    }
+
+                },
+
+                scales: {
+
+                    y: {
+
+                        beginAtZero: true,
+
+                        title: {
+
+                            display: true,
+
+                            text: "Root Mean Squared Error"
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        });
+
+    }
+
+
+    /* =========================
+       R2 CHART
+    ========================= */
+
+    const r2Canvas =
+        document.getElementById("r2Chart");
+
+    if (r2Canvas && modelNames.length > 0) {
+
+        new Chart(r2Canvas, {
+
+            type: "bar",
+
+            data: {
+
+                labels: modelNames,
+
+                datasets: [{
+
+                    label: "R²",
+
+                    data: r2Values,
+
+                    borderWidth: 1
+
+                }]
+
+            },
+
+            options: {
+
+                responsive: true,
+
+                plugins: {
+
+                    legend: {
+                        display: true
+                    }
+
+                },
+
+                scales: {
+
+                    y: {
+
+                        beginAtZero: true,
+
+                        max: 1,
+
+                        title: {
+
+                            display: true,
+
+                            text: "R² Score"
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        });
+
+    }
+
+</script>
+    <!-- JAVASCRIPT -->
+
+    <script src="{{ url_for('static',
+                  filename='js/script.js') }}">
+    </script>
+
+</body>
+
+</html>

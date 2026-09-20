@@ -1,0 +1,7 @@
+Model,MAE,RMSE,R2
+Linear Regression,0.4524,1.8044,0.7696
+Ridge Regression,0.4524,1.8044,0.7697
+Random Forest,1.0754,2.1498,0.673
+Gradient Boosting,0.8335,1.9599,0.7283
+Extra Trees,1.0248,2.0906,0.6908
+Hist Gradient Boosting,0.788,1.9545,0.7297
